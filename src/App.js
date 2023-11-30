@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Sidebar from './pages/components/Sidebar';
+import Importar from './pages/components/Import';
+import Listar from './pages/components/List';
+import Exportar from './pages/components/Export';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Router>
+        <div className="container-fluid">
+          <Row>
+            <Col lg={2} className="p-0 m-0">
+              <Sidebar />
+            </Col>
+            <Col className="p-0 m-0">
+
+              <Routes>
+                <Route path="/importar" element={<Importar />} />
+                <Route path="/listar" element={<Listar />} />
+                <Route path="/exportar" element={<Exportar />} />
+              </Routes>
+
+            </Col>
+          </Row>
+        </div>
+      </Router>
     </div>
   );
 }

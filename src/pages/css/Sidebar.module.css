@@ -1,0 +1,25 @@
+/* Sidebar.css */
+.sidebar {
+
+  height: 100vh; /* 100% da altura da viewport */
+  background-color: #f0f0f0; /* Cor de fundo (apenas para exemplo) */
+}
+
+/* Estilos para o conteúdo principal */
+.mainContent {
+  position: relative;
+  padding: 20px; /* Espaçamento interno (apenas para exemplo) */
+}
+
+
+.import{
+  background-color: blue;
+}
+
+.list{
+  background-color: red;
+}
+
+.export{
+  background-color: green;
+}
