@@ -8,25 +8,37 @@ import Table from 'react-bootstrap/Table';
 
 const Importar = () => {
     const [fileData, setFileData] = useState([]);
-    
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
 
         reader.onload = (e) => {
             const xmlString = e.target.result;
-            // Aqui você pode analisar o arquivo XML e extrair as informações desejadas
-            // Por exemplo, você pode usar uma biblioteca como xml2js para analisar o XML
-            // e extrair os dados relevantes.
 
-            // Simulando dados de exemplo
-            const extractedData = [
-                { id: 1, firstName: 'Mark', lastName: 'Otto', username: '@mdo' },
-                { id: 2, firstName: 'Jacob', lastName: 'Thornton', username: '@fat' },
-                { id: 3, firstName: 'Larry', lastName: 'Bird', username: '@twitter' }
-            ];
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
 
-            setFileData(extractedData);
+            const nfe = xmlDoc.getElementsByTagName('NFe')[0];
+            const infNFe = nfe.getElementsByTagName('infNFe')[0];
+
+            const infEmit = nfe.getElementsByTagName('emit')[0];
+            const infDest = nfe.getElementsByTagName('dest')[0];
+
+            const extractedData = {
+                senderName: infEmit.getElementsByTagName('xNome')[0].textContent,
+                senderCode: infEmit.getElementsByTagName('CNPJ')[0].textContent,
+
+                receiverName: infDest.getElementsByTagName('xNome')[0].textContent,
+                receiverCode: infDest.getElementsByTagName('CNPJ')[0].textContent,
+                // Add other fields as required
+
+                //supplier: infNFe.getElementsByTagName('xNome')[0].textContent,
+                invoiceNumber: infNFe.getElementsByTagName('nNF')[0].textContent,
+            };
+
+            console.log(extractedData);
+            setFileData([extractedData]); // Coloque os dados em um array
         };
 
         reader.readAsText(file);
@@ -48,19 +60,21 @@ const Importar = () => {
                                 <Table striped bordered hover variant="light">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
+                                            <th>Invoice</th>
+                                            <th>Remetente</th>
+                                            <th>CNPJ Remetente</th>
+                                            <th>Destinatário</th>
+                                            <th>CNPJ Destinatário</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {fileData.map((data) => (
-                                            <tr key={data.id}>
-                                                <td>{data.id}</td>
-                                                <td>{data.firstName}</td>
-                                                <td>{data.lastName}</td>
-                                                <td>{data.username}</td>
+                                        {fileData.map((data, index) => (
+                                            <tr key={index}>
+                                                <td>{data.invoiceNumber}</td>
+                                                <td>{data.senderName}</td>
+                                                <td>{data.senderCode}</td>
+                                                <td>{data.receiverName}</td>
+                                                <td>{data.receiverCode}</td>
                                             </tr>
                                         ))}
                                     </tbody>
